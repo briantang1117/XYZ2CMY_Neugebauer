@@ -32,61 +32,42 @@ def XYZ2Lab(X, Y, Z):
 
     return [L, a, b]
 
-def delta(Lab1,Lab2):
-    return ((Lab1[0]-Lab2[0])**2+(Lab1[1]-Lab2[1])**2+(Lab1[2]-Lab2[2])**2)**(1/2)
+
+def delta(Lab1, Lab2):
+    return ((Lab1[0] - Lab2[0]) ** 2 + (Lab1[1] - Lab2[1]) ** 2 + (Lab1[2] - Lab2[2]) ** 2) ** (1 / 2)
 
 
 # 声明变量
-Xpaper = 83.57
-Ypaper = 86.79
-Zpaper = 71.43
-Xc = 12.77
-Yc = 19.79
-Zc = 49.59
-Xm = 36.02
-Ym = 19.46
-Zm = 19.11
-Xy = 68.83
-Yy = 74.69
-Zy = 6.94
-Xmy = 33.88
-Ymy = 19.54
-Zmy = 2.97
-Xcy = 7.91
-Ycy = 18.14
-Zcy = 6.34
-Xcm = 6.24
-Ycm = 5.29
-Zcm = 20.16
-Xcmy = 1.09
-Ycmy = 1.18
-Zcmy = 1.07
+Xpaper, Ypaper, Zpaper = map(float, input('输入纸张XYZ并以空格隔开:').split())
+Xc, Yc, Zc = map(float, input('输入C色元XYZ并以空格隔开:').split())
+Xm, Ym, Zm = map(float, input('输入M色元XYZ并以空格隔开:').split())
+Xy, Yy, Zy = map(float, input('输入Y色元XYZ并以空格隔开:').split())
+Xmy, Ymy, Zmy = map(float, input('输入MY色元XYZ并以空格隔开:').split())
+Xcy, Ycy, Zcy = map(float, input('输入CY色元XYZ并以空格隔开:').split())
+Xcm, Ycm, Zcm = map(float, input('输入CM色元XYZ并以空格隔开:').split())
+Xcmy, Ycmy, Zcmy = map(float, input('输入CMY色元XYZ并以空格隔开:').split())
 
-Xce = 60.47
-Yce = 64.38
-Zce = 44.81
+while (True):
+    deltaE = 10000
+    c_result = 0.0
+    m_result = 0.0
+    y_result = 0.0
 
-Labce = XYZ2Lab(Xce,Yce,Zce)
-deltaE = 10000
+    Xce, Yce, Zce = map(float, input('输入XYZ并以空格隔开:').split())
+    print("计算中")
+    Labce = XYZ2Lab(Xce, Yce, Zce)
 
-c_result = 0.0
-m_result = 0.0
-y_result = 0.0
-
-
-for c in range(0, 101, 1):
-    for m in range(0, 101, 1):
-        for y in range(0, 101, 1):
-            Xji = X(c / 100, m / 100, y / 100)
-            Yji = Y(c / 100, m / 100, y / 100)
-            Zji = Z(c / 100, m / 100, y / 100)
-            Labji = XYZ2Lab(Xji,Yji,Zji)
-            deltaE_temp = delta(Labji,Labce)
-            print(deltaE_temp)
-            if(deltaE_temp < deltaE):
-                deltaE = deltaE_temp
-                c_result = c
-                m_result = m
-                y_result = y
-
-print(c_result,m_result,y_result)
+    for c in range(0, 101, 1):
+        for m in range(0, 101, 1):
+            for y in range(0, 101, 1):
+                Xji = X(c / 100, m / 100, y / 100)
+                Yji = Y(c / 100, m / 100, y / 100)
+                Zji = Z(c / 100, m / 100, y / 100)
+                Labji = XYZ2Lab(Xji, Yji, Zji)
+                deltaE_temp = delta(Labji, Labce)
+                if (deltaE_temp < deltaE):
+                    deltaE = deltaE_temp
+                    c_result = c
+                    m_result = m
+                    y_result = y
+    print("c=" + str(c_result) + " m=" + str(m_result) + " y=" + str(y_result))
